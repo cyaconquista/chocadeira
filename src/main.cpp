@@ -69,7 +69,7 @@ void setup(void)
   lcd.print("Iniciando");
   // Conectar
   WiFi.begin(ssid, password);
-
+  delay(2000);
   //Aguardando conexão
   Serial.println();
   Serial.print("Conectando");
@@ -83,7 +83,7 @@ void setup(void)
   Serial.println("WiFi connected");
    //Limpa a tela do display
    lcd.setCursor(0, 2);
-  lcd.print("Conectando aos sensores"); //Exibe a mensagem na primeira linha do display
+  lcd.print("CONECTION SENSORES"); //Exibe a mensagem na primeira linha do display
   delay(1000);
   //Envia IP através da UART
   Serial.println(WiFi.localIP());
@@ -103,8 +103,9 @@ void loop() {
   lcd.print(WiFi.localIP());
   lcd.setCursor(0, 2);
   lcd.print("CYACONQUISTA");
-  lcd.setCursor(0, 2);
-  lcd.print("(077)98843-4564");
+  lcd.setCursor(0, 3);
+  lcd.print("AGUARDANDO MQTT");
+
 
   char MsgTempMQTT[10];
   enviaDHT();
