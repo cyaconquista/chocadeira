@@ -12,7 +12,7 @@ const char* ssid = "CYACONQUISTA"; // REDE
 const char* password = "Pin202020"; // SENHA
 
 //Paramentros DHT11(Variaveis)ddd
-#define DHTPIN 4 //Pino digital D2 (GPIO5) conectado ao DHT11
+#define DHTPIN 26 //Pino digital D2 (GPIO5) conectado ao DHT11
 #define DHTTYPE DHT11 //Tipo do sensor DHT11
 
 
@@ -52,7 +52,7 @@ void enviaDHT(){
   Serial.print("Umidade: ");
   Serial.print(umidade); //Imprime no monitor serial o valor da umidade lida
   Serial.println(" %");
-  delay(2000);
+  delay(1000);
 
   sprintf(MsgTempMQTT,"%f",temperatura);
   client.publish("messiasdedeus@hotmail.com/topico1",MsgTempMQTT);
@@ -66,18 +66,19 @@ void setup(void)
   lcd.clear(); //Limpa a tela do display
   lcd.backlight(); //Aciona a luz de fundo do display
   lcd.setCursor(0, 0);
-  lcd.print("Iniciando");
+  lcd.print("CHOC TOBIAS");
   // Conectar
   WiFi.begin(ssid, password);
   delay(2000);
   //Aguardando conexão
   Serial.println();
-  Serial.print("Conectando");
+  Serial.print("INICIANDO CONEXÃO");
   lcd.setCursor(0, 1);
   lcd.print("Buscando rede"); //Exibe a mensagem na primeira linha do display
   while (WiFi.status() != WL_CONNECTED) {
     delay(5000);
     Serial.print(".");
+    lcd.print("SEM CONEXÃO");
   }
   Serial.println("");
   Serial.println("WiFi connected");
@@ -104,8 +105,9 @@ void loop() {
   lcd.setCursor(0, 2);
   lcd.print("CYACONQUISTA");
   lcd.setCursor(0, 3);
-  lcd.print("AGUARDANDO MQTT");
-
+  lcd.print("Temperatura:");
+  lcd.print(temperatura);
+    delay(1000);
 
   char MsgTempMQTT[10];
   enviaDHT();
@@ -168,4 +170,5 @@ void callback(char *topic, byte * payload, unsigned int length) {
   }
   Serial.println();
   Serial.println("-----------------------");
+  //while Update -y sudo su a
 }
