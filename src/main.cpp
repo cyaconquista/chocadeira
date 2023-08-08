@@ -1,7 +1,14 @@
+/* Projeto :Chocadeira - Choc tobias 
+    Autor: Manoel Messias Pereira de Deus
+    Cidade: Vitoria da Conquista
+    Data da ultima solicitação:  04/08/2023
+    Versão 2.0
+    Alterações feitas:*/
+
 #include <Wire.h>;
-#include <LiquidCrystal_I2C.h>;
- //teste Victor Emanuel
-// Define o endereço utilizado pelo Adaptador I2C cc
+#include <LiquidCrystal_I2C.h>;// Define o endereço utilizado pelo Adaptador I2C cc
+#include <MQTT/connectMQTT.cpp>
+#include <Sensores/temperatura.cpp>
 LiquidCrystal_I2C lcd(0x27,20,4);
 
 #include <WiFi.h>,
@@ -31,32 +38,11 @@ const int mqtt_port = 1883;             //Porta
 bool mqttStatus = 0;
 
 //Objetos
-WiFiClient espClient;
-PubSubClient client(espClient);
 
 //Prototipos
-bool connectMQTT();
-void callback(char *topic, byte * payload, unsigned int length);
 
-DHT dht(DHTPIN, DHTTYPE); //Inicializando o objeto dht do tipo DHT passando como parâmetro o pino (DHTPIN) e o tipo do sensor (DHTTYPE)
 
-float temperatura; //variável para armazenar a temperatura
-float umidade; //Variável para armazenar a umidade
-void enviaDHT(){
-  char MsgTempMQTT[10];
-  temperatura = dht.readTemperature();  //Realiza a leitura da temperatura
-  umidade = dht.readHumidity(); //Realiza a leitura da umidade
-  Serial.print("Temperatura: ");
-  Serial.print(temperatura); //Imprime no monitor serial o valor da temperatura lida
-  Serial.println(" ºC");
-  Serial.print("Umidade: ");
-  Serial.print(umidade); //Imprime no monitor serial o valor da umidade lida
-  Serial.println(" %");
-  delay(1000);
 
-  sprintf(MsgTempMQTT,"%f",temperatura);
-  client.publish("messiasdedeus@hotmail.com/topico1",MsgTempMQTT);
-}
 
 void setup(void)
 {
@@ -91,11 +77,12 @@ void setup(void)
   lcd.setCursor(0, 3); //Coloca o cursor do display na coluna 1 e linha 2
   lcd.print("IP:");  //Exibe a mensagem na segunda linha do display
   lcd.print(WiFi.localIP());
-  mqttStatus =  connectMQTT();
+  mqttStatus =  connectMQTT(mqtt_broker,mqtt_port,mqtt_username,mqtt_password,topic);
   delay(5000);
 }
 
 void loop() {
+  float temperatura =enviaDHT();
   lcd.clear(); //Limpa a tela do display
   lcd.setCursor(0, 0); //Coloca o cursor do display na coluna 1 e linha 1
   lcd.print("CHOCK TOBIAS"); //Exibe a mensagem na primeira linha do display
@@ -127,41 +114,9 @@ void loop() {
 
 
 
-bool connectMQTT() {
-  byte tentativa = 0;
-  client.setServer(mqtt_broker, mqtt_port);
-  client.setCallback(callback);
 
-  do {
-    String client_id = "BOBSIEN-";
-    client_id += String(WiFi.macAddress());
 
-    if (client.connect(client_id.c_str(), mqtt_username, mqtt_password)) {
-      Serial.println("Exito na conexão:");
-      Serial.printf("Cliente %s conectado ao broker\n", client_id.c_str());
-    } else {
-      Serial.print("Falha ao conectar: ");
-      Serial.print(client.state());
-      Serial.println();
-      Serial.print("Tentativa: ");
-      Serial.println(tentativa);
-      delay(2000);
-    }
-    tentativa++;
-  } while (!client.connected() && tentativa < 5);
-
-  if (tentativa < 5) {
-    // publish and subscribe   
-    //client.publish("messiasdedeus@hotmail.com/topico1",MsgTempMQTT); 
-    client.subscribe(topic);
-    return 1;
-  } else {
-    Serial.println("Não conectado");    
-    return 0;
-  }
-}
-
-void callback(char *topic, byte * payload, unsigned int length) {
+void callback2(char *topic, byte * payload, unsigned int length) {
   Serial.print("Message arrived in topic: ");
   Serial.println(topic);
   Serial.print("Message:");
