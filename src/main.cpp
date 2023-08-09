@@ -9,6 +9,7 @@
 #include <LiquidCrystal_I2C.h>;// Define o endereço utilizado pelo Adaptador I2C cc
 #include <MQTT/connectMQTT.cpp>
 #include <Sensores/temperatura.cpp>
+#include <Bluettoth/Bluettoth_conection.cpp>
 LiquidCrystal_I2C lcd(0x27,20,4);
 
 #include <WiFi.h>,
@@ -46,6 +47,7 @@ bool mqttStatus = 0;
 
 void setup(void)
 {
+  inicio();
   Serial.begin(9600);
   dht.begin(); //Inicializa o sensor DHT11
   lcd.init(); //Inicializa a comunicação com o display já conectado
@@ -69,8 +71,8 @@ void setup(void)
   Serial.println("");
   Serial.println("WiFi connected");
    //Limpa a tela do display
-   lcd.setCursor(0, 2);
-  lcd.print("CONECTION SENSORES"); //Exibe a mensagem na primeira linha do display
+  lcd.setCursor(0, 2);
+  lcd.print("CONECTADO A REDE"); //Exibe a mensagem na primeira linha do display
   delay(1000);
   //Envia IP através da UART
   Serial.println(WiFi.localIP());
@@ -82,7 +84,10 @@ void setup(void)
 }
 
 void loop() {
+  
   float temperatura =enviaDHT();
+  bluetooth2();
+  bluetooth.print(temperatura);
   lcd.clear(); //Limpa a tela do display
   lcd.setCursor(0, 0); //Coloca o cursor do display na coluna 1 e linha 1
   lcd.print("CHOCK TOBIAS"); //Exibe a mensagem na primeira linha do display
@@ -90,7 +95,8 @@ void loop() {
   lcd.print("IP LOCAl:");  //Exibe a mensagem na segunda linha do display
   lcd.print(WiFi.localIP());
   lcd.setCursor(0, 2);
-  lcd.print("CYACONQUISTA");
+  lcd.print("REDE:"); 
+  lcd.print(ssid);
   lcd.setCursor(0, 3);
   lcd.print("Temperatura:");
   lcd.print(temperatura);
