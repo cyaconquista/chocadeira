@@ -9,15 +9,16 @@
 #include <LiquidCrystal_I2C.h>;// Define o endereço utilizado pelo Adaptador I2C cc
 #include <MQTT/connectMQTT.cpp>
 #include <Sensores/temperatura.cpp>
-#include <Bluettoth/Bluettoth_conection.cpp>
+#include <conection/Bluettoth_conection.cpp>
+#include <conection/wifi_conection.cpp>
+
 LiquidCrystal_I2C lcd(0x27,20,4);
 
 #include <WiFi.h>,
 #include <PubSubClient.h>,
 #include <DHT.h> //Biblioteca para funcionamento do sensor de temperatura e umidade DHT11
 //Parametros de conexão
-const char* ssid = "CYACONQUISTA"; // REDE
-const char* password = "Pin202020"; // SENHA
+
 
 //Paramentros DHT11(Variaveis)ddd
 #define DHTPIN 26 //Pino digital D2 (GPIO5) conectado ao DHT11
@@ -48,6 +49,7 @@ bool mqttStatus = 0;
 void setup(void)
 {
   inicio();
+  conectawifi();
   Serial.begin(9600);
   dht.begin(); //Inicializa o sensor DHT11
   lcd.init(); //Inicializa a comunicação com o display já conectado
@@ -56,18 +58,14 @@ void setup(void)
   lcd.setCursor(0, 0);
   lcd.print("CHOC TOBIAS");
   // Conectar
-  WiFi.begin(ssid, password);
   delay(2000);
   //Aguardando conexão
   Serial.println();
   Serial.print("INICIANDO CONEXÃO");
   lcd.setCursor(0, 1);
   lcd.print("Buscando rede"); //Exibe a mensagem na primeira linha do display
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(5000);
-    Serial.print(".");
-    lcd.print("SEM CONEXÃO");
-  }
+
+  
   Serial.println("");
   Serial.println("WiFi connected");
    //Limpa a tela do display
@@ -96,7 +94,7 @@ void loop() {
   lcd.print(WiFi.localIP());
   lcd.setCursor(0, 2);
   lcd.print("REDE:"); 
-  lcd.print(ssid);
+  lcd.print(WiFi.SSID());
   lcd.setCursor(0, 3);
   lcd.print("Temperatura:");
   lcd.print(temperatura);
