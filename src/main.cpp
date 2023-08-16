@@ -4,14 +4,14 @@
     Data da ultima solicitação:  04/08/2023
     Versão 2.0
     Alterações feitas:*/
-
+#include <SPI.h>;
 #include <Wire.h>;
 #include <LiquidCrystal_I2C.h>;// Define o endereço utilizado pelo Adaptador I2C cc
 #include <MQTT/connectMQTT.cpp>
 #include <Sensores/temperatura.cpp>
 #include <conection/Bluettoth_conection.cpp>
 #include <conection/wifi_conection.cpp>
-
+#include <controles/ligar_motor.cpp>
 LiquidCrystal_I2C lcd(0x27,20,4);
 
 #include <WiFi.h>,
@@ -85,6 +85,7 @@ void loop() {
   
   float temperatura =enviaDHT();
   bluetooth2();
+ 
   bluetooth.print(temperatura);
   lcd.clear(); //Limpa a tela do display
   lcd.setCursor(0, 0); //Coloca o cursor do display na coluna 1 e linha 1
@@ -102,6 +103,7 @@ void loop() {
 
   char MsgTempMQTT[10];
   enviaDHT();
+  viragem ();
 
  static long long pooling  = 0;
   if ( mqttStatus){
