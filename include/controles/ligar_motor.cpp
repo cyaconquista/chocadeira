@@ -40,7 +40,7 @@ void viragem () {
     Serial.print(now.second(), DEC); //IMPRIME NO MONITOR SERIAL OS SEGUNDOS
     Serial.println(); //QUEBRA DE LINHA NA SERIAL
     delay(1000); //INTERVALO DE 1 SEGUNDO
-       if ((now.hour() == 23) && (now.minute()==22)&& (now.second()>45)&& (now.second()<51))
+       if ((now.hour() == 00) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, HIGH);
    
@@ -50,7 +50,34 @@ void viragem () {
     
   }
 
-         if ((now.hour() == 00) && (now.minute()==3)&& (now.second()>45)&& (now.second()<51))
+         if ((now.hour() == 02) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  {
+    digitalWrite(rele, HIGH);
+   
+
+    delay(6000);
+    digitalWrite(rele, LOW);
+    
+  }
+           if ((now.hour() == 04) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  {
+    digitalWrite(rele, HIGH);
+   
+
+    delay(6000);
+    digitalWrite(rele, LOW);
+    
+  }
+           if ((now.hour() == 06) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  {
+    digitalWrite(rele, HIGH);
+   
+
+    delay(6000);
+    digitalWrite(rele, LOW);
+    
+  }
+           if ((now.hour() == 02) && (now.minute()==20)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, HIGH);
    
