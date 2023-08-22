@@ -48,6 +48,7 @@ bool mqttStatus = 0;
 
 void setup(void)
 {
+  digitalWrite(rele, HIGH);
   inicio();
   conectawifi();
   Serial.begin(9600);
@@ -83,10 +84,11 @@ void setup(void)
 
 void loop() {
   
-  float temperatura =enviaDHT();
+  Temperatura dados_sensor =enviaDHT();
+  
   bluetooth2();
  
-  bluetooth.print(temperatura);
+  bluetooth.print(dados_sensor.temperatura);
   lcd.clear(); //Limpa a tela do display
   lcd.setCursor(0, 0); //Coloca o cursor do display na coluna 1 e linha 1
   lcd.print("CHOCK TOBIAS"); //Exibe a mensagem na primeira linha do display
@@ -94,11 +96,11 @@ void loop() {
   lcd.print("IP LOCAl:");  //Exibe a mensagem na segunda linha do display
   lcd.print(WiFi.localIP());
   lcd.setCursor(0, 2);
-  lcd.print("REDE:"); 
-  lcd.print(WiFi.SSID());
-  lcd.setCursor(0, 3);
   lcd.print("Temperatura:");
-  lcd.print(temperatura);
+  lcd.print(dados_sensor.temperatura);
+  lcd.setCursor(0, 3);
+  lcd.print("Umidade:");
+  lcd.print(dados_sensor.umidade);
     delay(1000);
 
   char MsgTempMQTT[10];
