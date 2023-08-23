@@ -7,12 +7,14 @@
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-void callback(char *topic, byte * payload, unsigned int length){
+void callba(char *topic, byte * payload, unsigned int length){
+  String msg = "";
   Serial.print("Message arrived in topic: ");
   Serial.println(topic);
   Serial.print("Message:");
   for (int i = 0; i < length; i++) {
-    Serial.print((char) payload[i]);
+    msg.concat((char) payload[i]);
+    Serial.print((char)payload[i]);
   }
   Serial.println();
   Serial.println("-----------------------");
@@ -21,7 +23,7 @@ void callback(char *topic, byte * payload, unsigned int length){
 bool connectMQTT(const char *mqtt_broker,int mqtt_port,const char *mqtt_username, const char * mqtt_password, const char * topic ) {
   byte tentativa = 0;
   client.setServer(mqtt_broker, mqtt_port);
-  client.setCallback(callback);
+  client.setCallback(callba);
 
   do {
     String client_id = "BOBSIEN-";
@@ -42,8 +44,8 @@ bool connectMQTT(const char *mqtt_broker,int mqtt_port,const char *mqtt_username
   } while (!client.connected() && tentativa < 5);
 
   if (tentativa < 5) {
-    // publish and subscribe   
-    //client.publish("messiasdedeus@hotmail.com/topico1",MsgTempMQTT); 
+     // publish and subscribe   
+    // client.publish(topic, "{teste123,113007042022}"); 
     client.subscribe(topic);
     return 1;
   } else {

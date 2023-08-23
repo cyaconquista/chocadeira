@@ -39,6 +39,7 @@ const int mqtt_port = 1883;             //Porta
 //Variáveis
 bool mqttStatus = 0;
 
+static long long pooling  = 0;
 //Objetos
 
 //Prototipos
@@ -107,14 +108,15 @@ void loop() {
   enviaDHT();
   viragem ();
 
- static long long pooling  = 0;
+
   if ( mqttStatus){
     
     client.loop();    
 
     if (millis() > pooling +1000){
       pooling = millis();
-     // client.publish(topic, MsgTempMQTT);
+      String msg= ("temperatura:"+ String( dados_sensor.temperatura) + "Umidade:" + String( dados_sensor.umidade));
+      client.publish(topic,msg.c_str() );
     }
        
   }
