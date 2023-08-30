@@ -39,7 +39,7 @@ const int mqtt_port = 1883;             //Porta
 //Variáveis
 bool mqttStatus = 0;
 
-static long long pooling  = 0;
+
 //Objetos
 
 //Prototipos
@@ -83,6 +83,24 @@ void setup(void)
   delay(5000);
 }
 
+void envia_MQTT(){
+    Temperatura dados_sensor =enviaDHT();
+    static long long pooling  = 0;
+    if ( mqttStatus){
+    
+    client.loop();    
+
+      if (millis() > pooling +1000){
+      pooling = millis();
+      String msg= ("temperatura:"+ String( dados_sensor.temperatura) + "Umidade:" + String( dados_sensor.umidade));
+       client.publish(topic,msg.c_str() );
+       client.subscribe(topic);
+      }
+       
+    }
+
+}
+
 void loop() {
   
   Temperatura dados_sensor =enviaDHT();
@@ -90,6 +108,8 @@ void loop() {
   bluetooth2();
  
   bluetooth.print(dados_sensor.temperatura);
+  String client_id = "CYACONQUISTA-";
+  client_id += String(WiFi.macAddress());
   lcd.clear(); //Limpa a tela do display
   lcd.setCursor(0, 0); //Coloca o cursor do display na coluna 1 e linha 1
   lcd.print("CHOCK TOBIAS"); //Exibe a mensagem na primeira linha do display
@@ -107,19 +127,10 @@ void loop() {
   char MsgTempMQTT[10];
   enviaDHT();
   viragem ();
+  manter_conexao();
+  envia_MQTT();
 
 
-  if ( mqttStatus){
-    
-    client.loop();    
-
-    if (millis() > pooling +1000){
-      pooling = millis();
-      String msg= ("temperatura:"+ String( dados_sensor.temperatura) + "Umidade:" + String( dados_sensor.umidade));
-      client.publish(topic,msg.c_str() );
-    }
-       
-  }
 }
 
 

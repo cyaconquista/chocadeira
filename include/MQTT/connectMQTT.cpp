@@ -1,11 +1,16 @@
 #ifndef casa
 #define casa
+
 #include <PubSubClient.h>
 #include <Arduino.h>
 #include <WiFi.h>
+#include <conection/wifi_conection.cpp>
 
 WiFiClient espClient;
 PubSubClient client(espClient);
+#define ID_MQTT  "BCI01"            //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
+
+PubSubClient MQTT(espClient);
 
 void callba(char *topic, byte * payload, unsigned int length){
   String msg = "";
@@ -20,13 +25,15 @@ void callba(char *topic, byte * payload, unsigned int length){
   Serial.println("-----------------------");
   //while Update -y sudo su a
 }
+
+
 bool connectMQTT(const char *mqtt_broker,int mqtt_port,const char *mqtt_username, const char * mqtt_password, const char * topic ) {
   byte tentativa = 0;
   client.setServer(mqtt_broker, mqtt_port);
   client.setCallback(callba);
 
   do {
-    String client_id = "BOBSIEN-";
+    String client_id = "CYACONQUISTA-";
     client_id += String(WiFi.macAddress());
 
     if (client.connect(client_id.c_str(), mqtt_username, mqtt_password)) {
@@ -45,6 +52,7 @@ bool connectMQTT(const char *mqtt_broker,int mqtt_port,const char *mqtt_username
 
   if (tentativa < 5) {
      // publish and subscribe   
+     
     // client.publish(topic, "{teste123,113007042022}"); 
     client.subscribe(topic);
     return 1;
@@ -52,5 +60,46 @@ bool connectMQTT(const char *mqtt_broker,int mqtt_port,const char *mqtt_username
     Serial.println("Não conectado");    
     return 0;
   }
+  
 }
+void conectaWiFi() {
+
+  if (WiFi.status() == WL_CONNECTED) {
+     return;
+  }
+        
+ 
+
+ 
+  while (WiFi.status() != WL_CONNECTED) {
+      delay(100);
+      Serial.print(".");
+  }
+  
+
+}
+void conectaMQTT() { 
+    while (!client.connected()) {
+        Serial.print("Conectando ao Broker MQTT: ");
+       
+        if (client.connect(ID_MQTT)) {
+            Serial.println("Conectado ao Broker com sucesso!");
+        } 
+        else {
+            Serial.println("Noo foi possivel se conectar ao broker.");
+            Serial.println("Nova tentatica de conexao em 10s");
+            delay(10000);
+        }
+    }
+}
+void manter_conexao(){
+    if (!MQTT.connected()) {
+       conectaMQTT(); 
+    }
+    
+    conectaWiFi(); //se não há conexão com o WiFI, a conexão é refeita
+}
+
+
+
 #endif
