@@ -84,17 +84,17 @@ void setup(void)
 }
 
 void envia_MQTT(){
-    Temperatura dados_sensor =enviaDHT();
-    static long long pooling  = 0;
+  Temperatura dados_sensor =enviaDHT();
+  static long long pooling  = 0;
     if ( mqttStatus){
     
-    client.loop();    
+      client.loop();    
 
-      if (millis() > pooling +1000){
-      pooling = millis();
-      String msg= ("temperatura:"+ String( dados_sensor.temperatura) + "Umidade:" + String( dados_sensor.umidade));
-       client.publish(topic,msg.c_str() );
-       client.subscribe(topic);
+      if (millis() > pooling +3000){
+        pooling = millis();
+        String msg= ("temperatura:"+ String( dados_sensor.temperatura) + "Umidade:" + String( dados_sensor.umidade));
+        client.publish(topic,msg.c_str() );
+       
       }
        
     }
@@ -108,11 +108,11 @@ void loop() {
   bluetooth2();
  
   bluetooth.print(dados_sensor.temperatura);
-  String client_id = "CYACONQUISTA-";
+  String client_id = "BROKER-";
   client_id += String(WiFi.macAddress());
   lcd.clear(); //Limpa a tela do display
   lcd.setCursor(0, 0); //Coloca o cursor do display na coluna 1 e linha 1
-  lcd.print("CHOCK TOBIAS"); //Exibe a mensagem na primeira linha do display
+  lcd.print(client_id); //Exibe a mensagem na primeira linha do display
   lcd.setCursor(0, 1); //Coloca o cursor do display na coluna 1 e linha 2
   lcd.print("IP LOCAl:");  //Exibe a mensagem na segunda linha do display
   lcd.print(WiFi.localIP());

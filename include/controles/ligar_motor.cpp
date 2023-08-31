@@ -19,7 +19,7 @@ void viragem () {
     Serial.println("DS1307 rodando!"); //IMPRIME O TEXTO NO MONITOR SERIAL
     //REMOVA O COMENTÁRIO DE UMA DAS LINHAS ABAIXO PARA INSERIR AS INFORMAÇÕES ATUALIZADAS EM SEU RTC
     //rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); //CAPTURA A DATA E HORA EM QUE O SKETCH É COMPILADO
-    rtc.adjust(DateTime(2023, 8, 23, 19, 50, 15)); //(ANO), (MÊS), (DIA), (HORA), (MINUTOS), (SEGUNDOS)
+    rtc.adjust(DateTime(2023, 8, 31, 01, 14, 15)); //(ANO), (MÊS), (DIA), (HORA), (MINUTOS), (SEGUNDOS)
   }
   delay(100); //INTERVALO DE 100 MILISSEGUNDOS
 
@@ -40,7 +40,7 @@ void viragem () {
     Serial.print(now.second(), DEC); //IMPRIME NO MONITOR SERIAL OS SEGUNDOS
     Serial.println(); //QUEBRA DE LINHA NA SERIAL
     delay(1000); //INTERVALO DE 1 SEGUNDO
-       if ((now.hour() == 00) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 01) && (now.minute()==17)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
 
@@ -51,7 +51,7 @@ void viragem () {
     
   }
 
-         if ((now.hour() == 02) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 02) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    
@@ -61,7 +61,7 @@ void viragem () {
 
     
   }
-           if ((now.hour() == 04) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 04) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    
@@ -71,7 +71,7 @@ void viragem () {
 
     
   }
-           if ((now.hour() == 06) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 06) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    
@@ -80,7 +80,7 @@ void viragem () {
     digitalWrite(rele, HIGH);
 
   }
-           if ((now.hour() == 8) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+ if ((now.hour() == 8) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    
@@ -90,7 +90,7 @@ void viragem () {
  
   }
 
-            if ((now.hour() == 10) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 10) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    
@@ -101,7 +101,7 @@ void viragem () {
     
   }
 
-              if ((now.hour() == 12) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 12) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    
@@ -111,7 +111,7 @@ void viragem () {
 
   }
 
-                if ((now.hour() == 14) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 14) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    
@@ -121,7 +121,7 @@ void viragem () {
  
   }
 
-                if ((now.hour() == 16) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 16) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    
@@ -130,7 +130,7 @@ void viragem () {
     digitalWrite(rele, HIGH);
     
   }
-                if ((now.hour() == 18) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 18) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    
@@ -140,7 +140,7 @@ void viragem () {
 
   }
 
-                  if ((now.hour() == 20) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 20) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    
@@ -150,7 +150,7 @@ void viragem () {
     
   }
 
-                  if ((now.hour() == 22) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
+  if ((now.hour() == 22) && (now.minute()==30)&& (now.second()>45)&& (now.second()<51))
   {
     digitalWrite(rele, LOW);
    

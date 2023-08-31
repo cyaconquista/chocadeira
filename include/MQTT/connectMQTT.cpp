@@ -8,9 +8,9 @@
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-#define ID_MQTT  "BCI01"            //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
+#define ID_MQTT  "BROKER01"            //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
 
-PubSubClient MQTT(espClient);
+
 
 void callba(char *topic, byte * payload, unsigned int length){
   String msg = "";
@@ -54,7 +54,7 @@ bool connectMQTT(const char *mqtt_broker,int mqtt_port,const char *mqtt_username
      // publish and subscribe   
      
     // client.publish(topic, "{teste123,113007042022}"); 
-    client.subscribe(topic);
+    //client.subscribe(topic);
     return 1;
   } else {
     Serial.println("Não conectado");    
@@ -93,7 +93,7 @@ void conectaMQTT() {
     }
 }
 void manter_conexao(){
-    if (!MQTT.connected()) {
+    if (!client.connected()) {
        conectaMQTT(); 
     }
     
