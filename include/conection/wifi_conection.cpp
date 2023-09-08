@@ -14,7 +14,7 @@ void conectawifi() {
     
     //WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
     WiFiManager wm;
-    
+    wm.autoConnect();
     // reset settings - wipe stored credentials for testing
     // these are stored by the esp library
     // wm.resetSettings();
