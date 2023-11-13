@@ -15,7 +15,7 @@
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 #include <WiFi.h>,
-#include <PubSubClient.h>,
+#include <PubSubClient.h>, //Biplioteca para mqtt
 #include <DHT.h> //Biblioteca para funcionamento do sensor de temperatura e umidade DHT11
 // Parametros de conexão
 
@@ -25,7 +25,7 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 #define col 16    // Define o número de colunas do display utilizado
 #define lin 4     // Define o número de linhas do display utilizado
-#define ende 0x27 // Define o endereço do display
+#define ende 0x27 // Define o endereço do display 
 
 // MQTT Broker
 
