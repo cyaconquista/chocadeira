@@ -5,7 +5,7 @@
 #include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
 
 
-void conectawifi() {
+void conectawifimanager() {
     // WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
     // it is a good practice to make sure your code sets wifi mode how you want it.
 
@@ -30,12 +30,12 @@ void conectawifi() {
     res = wm.autoConnect("Choctobias","chocadeira"); // password protected ap
 
     if(!res) {
-        Serial.println("Failed to connect");
+        Serial.println("Falhou ao conectar");
         // ESP.restart();
     } 
     else {
         //if you get here you have connected to the WiFi    
-        Serial.println("connected...yeey :)");
+        Serial.println("connected a rede pelo wifi manage:)");
     }
 
 }

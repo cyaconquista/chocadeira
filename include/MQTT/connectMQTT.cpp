@@ -11,6 +11,8 @@ const char *mqtt_username = "messiasdedeus@hotmail.com"; // Usuario
 const char *mqtt_password = "chocadeira";                // Senha
 const int mqtt_port = 1883;                              // Porta
 
+const char* SSID = SSID;                // SSID / nome da rede WiFi que deseja se conectar
+const char* PASSWORD = PASSWORD ;   // Senha da rede WiFi que deseja se conectar
 WiFiClient espClient;
 PubSubClient client(espClient);
 #define ID_MQTT "BROKER01" // Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior.
@@ -102,11 +104,14 @@ void conectaMQTT()
 {
   while (!client.connected())
   {
+    String client_id = "BROKER2-";
+    client_id += String(WiFi.macAddress());
     Serial.print("Conectando ao Broker MQTT: ");
 
-    if (client.connect(ID_MQTT))
+    if (client.connect(client_id.c_str(), mqtt_username, mqtt_password))
     {
-      Serial.println("Conectado ao Broker com sucesso!");
+      Serial.println("Reconectado ao Broker com sucesso!");
+      Serial.println(client_id);
     }
     else
     {
@@ -124,8 +129,10 @@ void manter_conexao()
   if (!client.connected())
   {
    delay(10000);
-   Serial.print("Reiniciar");
-   ESP.restart();
+   Serial.print("Reconectando a rede wifi");
+   conectaWiFi();
+   delay(2000);
+   conectaMQTT();
     
   }
   // se não há conexão com o WiFI, a conexão é refeita

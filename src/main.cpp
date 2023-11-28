@@ -41,8 +41,8 @@ void setup(void)
 {
   digitalWrite(rele, HIGH);
   inicio();
-  conectaWiFi();
-  conectawifi() ;
+
+  conectawifimanager() ;
   //conectawifi();
   Serial.begin(9600);
   dht.begin();     // Inicializa o sensor DHT11
