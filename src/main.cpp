@@ -114,6 +114,17 @@ void loop()
   lcd.print("Umidade:");
   // lcd.print(dados_sensor.umidade);
   lcd.print(dados_sensor.umidade);
+  if (!client.connected())
+  {
+    lcd.clear();
+    lcd.setCursor(0, 0);    // Coloca o cursor do display na coluna 1 e linha 1
+    lcd.print("SEM CONEXAO WIFI");
+    lcd.setCursor(0, 1);    // Coloca o cursor do display na coluna 1 e linha 2
+    lcd.print("PERDA DE CONEXAO");
+    lcd.setCursor(0, 2);
+    lcd.print("RECONECTANDO");
+  }
+  
   manter_conexao();
   bluetooth2();
   enviaDHT();
