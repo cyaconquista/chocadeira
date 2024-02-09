@@ -19,9 +19,10 @@ void viragem () {
     Serial.println("DS1307 rodando!"); //IMPRIME O TEXTO NO MONITOR SERIAL
     //REMOVA O COMENTÁRIO DE UMA DAS LINHAS ABAIXO PARA INSERIR AS INFORMAÇÕES ATUALIZADAS EM SEU RTC
     //rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); //CAPTURA A DATA E HORA EM QUE O SKETCH É COMPILADO
-    rtc.adjust(DateTime(2023, 8, 31, 01, 14, 15)); //(ANO), (MÊS), (DIA), (HORA), (MINUTOS), (SEGUNDOS)
+    rtc.adjust(DateTime(2024, 1, 28, 20, 38, 15)); //(ANO), (MÊS), (DIA), (HORA), (MINUTOS), (SEGUNDOS)
+    delay(100); //INTERVALO DE 100 MILISSEGUNDOS
   }
-  delay(100); //INTERVALO DE 100 MILISSEGUNDOS
+  
 
     DateTime now = rtc.now(); //CHAMADA DE FUNÇÃO
     Serial.print("Data: "); //IMPRIME O TEXTO NO MONITOR SERIAL

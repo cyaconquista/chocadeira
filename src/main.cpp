@@ -26,7 +26,7 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);
 #define col 16    // Define o número de colunas do display utilizado
 #define lin 4     // Define o número de linhas do display utilizado
 #define ende 0x27 // Define o endereço do display
-
+int umidificado = 25;
 // MQTT Broker
 
 
@@ -39,6 +39,8 @@ bool mqttStatus = 0;
 
 void setup(void)
 {
+  pinMode(umidificado,OUTPUT);
+  digitalWrite(umidificado,HIGH);
   digitalWrite(rele, HIGH);
   inicio();
 
@@ -91,6 +93,21 @@ void envia_MQTT()
     }
   }
 }
+void acionar_umidificado()
+{
+  Temperatura dados_sensor = enviaDHT();
+  if (dados_sensor.umidade <60 )
+  {
+    digitalWrite(umidificado,LOW);
+    Serial.println("Umidade baixa");
+  }
+   if (dados_sensor.umidade >60 )
+  {
+    digitalWrite(umidificado,HIGH);
+    Serial.println("Umidade alta");
+  }
+}
+
 
 void loop()
 {
@@ -107,13 +124,12 @@ void loop()
   lcd.setCursor(0, 1);    // Coloca o cursor do display na coluna 1 e linha 2
   lcd.print("IP LOCAl:"); // Exibe a mensagem na segunda linha do display
   lcd.print(WiFi.localIP());
-  lcd.setCursor(0, 2);
-  lcd.print("Temperatura:");
-  lcd.print(dados_sensor.temperatura);
-  lcd.setCursor(0, 3);
-  lcd.print("Umidade:");
+  // lcd.setCursor(0, 2);
+  // lcd.print("Temperatura:");
+  // lcd.print(dados_sensor.temperatura);
+  // lcd.setCursor(0, 3);
+  // lcd.print("Umidade:");
   // lcd.print(dados_sensor.umidade);
-  lcd.print(dados_sensor.umidade);
   if (!client.connected())
   {
     lcd.clear();
@@ -127,9 +143,30 @@ void loop()
   
   manter_conexao();
   bluetooth2();
-  enviaDHT();
-  // viragem();
+  if (isnan(dados_sensor.umidade) || isnan(dados_sensor.temperatura)){
+    lcd.clear();
+    lcd.print("FALHA SENSOR");
+    lcd.setCursor(0, 2);    // Coloca o cursor do display na coluna 1 e linha 2
+    lcd.print("FALHA TEMPERATURA");
+    lcd.setCursor(0, 3);
+    lcd.print("FALHA UMIDADE");    
+  }
+  else if (dados_sensor.umidade_atual !=dados_sensor.umidade || dados_sensor.temperatura_atual != dados_sensor.temperatura)
+  {
+    dados_sensor.umidade_atual =dados_sensor.umidade;
+    dados_sensor.temperatura_atual =dados_sensor.temperatura;
+    lcd.setCursor(0, 2);
+    lcd.print("Temperatura:");
+    lcd.print(dados_sensor.temperatura);
+    lcd.setCursor(0, 3);
+    lcd.print("Umidade:");
+    lcd.print(dados_sensor.umidade);
+  }
+  
+ 
+  viragem();
   envia_MQTT();
+  acionar_umidificado();
   client.loop();
 }
 

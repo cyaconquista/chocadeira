@@ -1,10 +1,11 @@
 #include <DHT.h> //Biblioteca para funcionamento do sensor de temperatura e umidade DHT11
 
 #define DHTPIN 26 //Pino digital D2 (GPIO5) conectado ao DHT11
-#define DHTTYPE DHT11 //Tipo do sensor DHT11
+#define DHTTYPE DHT22 //Tipo do sensor DHT11
 struct Temperatura
 {
   float temperatura; float umidade;
+  float temperatura_atual; float umidade_atual;
 };
 
 DHT dht(DHTPIN, DHTTYPE); //Inicializando o objeto dht do tipo DHT passando como parâmetro o pino (DHTPIN) e o tipo do sensor (DHTTYPE)
