@@ -84,11 +84,13 @@ void envia_MQTT()
   if (mqttStatus)
   {
 
-    if (millis() > pooling + 3000)
+    if (dados_sensor.umidade_atual !=dados_sensor.umidade || dados_sensor.temperatura_atual != dados_sensor.temperatura)
     {
-      pooling = millis();
+      dados_sensor.umidade_atual =dados_sensor.umidade;
+      dados_sensor.temperatura_atual =dados_sensor.temperatura;
+      String msg2 = "{\"temperatura\":"+String(dados_sensor.temperatura) + ",\"Umidade\":"+ String(dados_sensor.umidade) + "} ";
       String msg = ("temperatura:" + String(dados_sensor.temperatura) + "Umidade:" + String(dados_sensor.umidade));
-      client.publish(topic, msg.c_str());
+      client.publish(topic, msg2.c_str());
      
     }
   }
