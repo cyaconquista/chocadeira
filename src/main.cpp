@@ -27,6 +27,7 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);
 #define lin 4     // Define o número de linhas do display utilizado
 #define ende 0x27 // Define o endereço do display
 int umidificado = 25;
+Temperatura dados_sensor;
 // MQTT Broker
 
 
@@ -79,22 +80,23 @@ void setup(void)
 
 void envia_MQTT()
 {
-  Temperatura dados_sensor = enviaDHT();
+  dados_sensor = enviaDHT();
   static long long pooling = 0;
-  if (mqttStatus)
-  {
+ 
 
     if (dados_sensor.umidade_atual !=dados_sensor.umidade || dados_sensor.temperatura_atual != dados_sensor.temperatura)
     {
       dados_sensor.umidade_atual =dados_sensor.umidade;
       dados_sensor.temperatura_atual =dados_sensor.temperatura;
+      pooling = millis();
       String msg2 = "{\"temperatura\":"+String(dados_sensor.temperatura) + ",\"Umidade\":"+ String(dados_sensor.umidade) + "} ";
       String msg = ("temperatura:" + String(dados_sensor.temperatura) + "Umidade:" + String(dados_sensor.umidade));
       client.publish(topic, msg2.c_str());
      
     }
   }
-}
+
+
 void acionar_umidificado()
 {
   Temperatura dados_sensor = enviaDHT();
